@@ -1,0 +1,7 @@
+*.log
+*.pot
+*.pyc
+.idea/
+
+{{ cookiecutter.project_slug }}/Pipfile.lock
+todo_project_name/
