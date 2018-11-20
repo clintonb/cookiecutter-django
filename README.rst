@@ -13,6 +13,7 @@ Features
 * Support for Python 3.6+
 * `12-Factor <https://12factor.net/>`_ based settings via `django-environ <https://django-environ.readthedocs.io/en/latest/>`_
 * Custom user model
+* Docker support
 
 
 Usage
