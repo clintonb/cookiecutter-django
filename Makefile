@@ -4,9 +4,6 @@
 
 requirements:
 	pip install -r requirements.txt
-	# TODO Restore once https://github.com/pypa/pipenv/issues/3224 is released
-	# pip install pipenv
-	pip install git+https://github.com/pypa/pipenv
 
 test:
 	# Remove any existing data
@@ -16,8 +13,9 @@ test:
 	cookiecutter . --no-input
 
 	# Execute the project's Make targets
-	cd todo_project_name && make production-requirements requirements
-	cd todo_project_name && SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" pipenv run make detect_missing_migrations
-	cd todo_project_name && SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" pipenv run make migrate
-	cd todo_project_name && pipenv run make validate
-	cd todo_project_name && pipenv run make static
+	cd todo_project_name && make docker.build
+	cd todo_project_name && make local.up
+	cd todo_project_name && docker exec -it todo_project_name.app make detect_missing_migrations
+	cd todo_project_name && docker exec -it todo_project_name.app make migrate
+	cd todo_project_name && docker exec -it todo_project_name.app make validate
+	cd todo_project_name && make local.down
