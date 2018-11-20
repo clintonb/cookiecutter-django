@@ -1,9 +1,12 @@
+sudo: required
+
+services:
+  - docker
+
 language: python
 
 python:
     - 3.6
-
-sudo: false
 
 cache: pip
 
@@ -16,3 +19,5 @@ install:
 
 script:
     - make test
+    - make test-static
+    - make down

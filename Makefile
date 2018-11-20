@@ -1,14 +1,11 @@
 .DEFAULT_GOAL := test
 
-.PHONY: requirements test
+.PHONY: down requirements test test-static
 
-requirements:
+requirements:	## Install the requirements needed to run Cookiecutter
 	pip install -r requirements.txt
-	# TODO Restore once https://github.com/pypa/pipenv/issues/3224 is released
-	# pip install pipenv
-	pip install git+https://github.com/pypa/pipenv
 
-test:
+test:	## Ensure we can build and run a new project
 	# Remove any existing data
 	rm -rf todo_project_name
 
@@ -16,8 +13,14 @@ test:
 	cookiecutter . --no-input
 
 	# Execute the project's Make targets
-	cd todo_project_name && make production-requirements requirements
-	cd todo_project_name && SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" pipenv run make detect_missing_migrations
-	cd todo_project_name && SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" pipenv run make migrate
-	cd todo_project_name && pipenv run make validate
-	cd todo_project_name && pipenv run make static
+	cd todo_project_name && make docker.build
+	cd todo_project_name && make local.up
+	cd todo_project_name && docker exec -it todo_project_name.app make detect_missing_migrations
+	cd todo_project_name && docker exec -it todo_project_name.app make migrate
+	cd todo_project_name && docker exec -it todo_project_name.app make validate
+
+test-static:	## Confirm nginx is serving static files
+	curl -o /dev/null --fail --silent http://localhost:8080/static/admin/css/login.css
+
+down:	## Shutdown the containers
+	cd todo_project_name && make local.down
