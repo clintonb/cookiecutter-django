@@ -47,13 +47,13 @@ quality: ## Run pep8 and Pylint
 validate: quality test ## Run tests and quality checks
 
 detect_missing_migrations:  ## Determine if any apps are missing generated migrations
-	SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" python manage.py makemigrations --check --dry-run || (echo "Migration files are missing. Please run the "makemigrations" management command, and commit the migrations." && false)
+	python manage.py makemigrations --check --dry-run || (echo "Migration files are missing. Please run the "makemigrations" management command, and commit the migrations." && false)
 
 migrate: ## Apply database migrations
-	SECRET_KEY=fake python manage.py migrate --noinput
+	python manage.py migrate --noinput
 
 static: ## Gather all static assets for production
-	SECRET_KEY=fake DATABASE_URL="sqlite://:memory:" python manage.py collectstatic --noinput
+	python manage.py collectstatic --noinput
 
 clean_static: ## Remove all generated static files
 	rm -rf {{ cookiecutter.project_slug }}/public/
