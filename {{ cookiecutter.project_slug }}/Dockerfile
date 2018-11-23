@@ -26,18 +26,15 @@ RUN pipenv install --dev --system
 COPY . /app/{{ cookiecutter.project_slug }}
 
 RUN mkdir -p /logs \
-    && touch /logs/app.log
+    && touch /logs/app.log \
+    && touch /logs/gunicorn.log
 
 ENV PUBLIC_ROOT /public
-RUN make static
+ENV LOG_FILE_PATH /logs
+ENV ENABLE_LOGGING_TO_FILE true
+
+VOLUME /public/media
 
 EXPOSE 8000
 
-VOLUME /public/media
-VOLUME /public/static
-
-
-ENV LOG_FILE_PATH /logs
-ENV ENABLE_LOGGING_TO_FILE true
-ENV GUNICORN_CMD_ARGS "--workers=2 --worker-class=gevent --bind=0.0.0.0:8000"
-CMD ["gunicorn", "{{ cookiecutter.project_slug }}.wsgi"]
+ENTRYPOINT ["/app/{{ cookiecutter.project_slug }}/docker-entrypoint.sh"]
