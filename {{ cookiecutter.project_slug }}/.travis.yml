@@ -1,0 +1,27 @@
+sudo: required
+
+services:
+  - docker
+
+language: python
+
+python:
+  - 3.6
+
+cache: pip
+
+install:
+  - make docker.build
+  - make local.up
+
+script:
+  - docker exec -t {{cookiecutter.project_slug}}.app make quality
+  - docker exec -t {{cookiecutter.project_slug}}.app make static
+  - docker exec -t {{cookiecutter.project_slug}}.app make test
+
+after_success:
+  - pip install -U codecov
+  - docker exec -t {{cookiecutter.project_slug}}.app coverage xml
+  - codecov
+
+# TODO Push image to Docker Hub
