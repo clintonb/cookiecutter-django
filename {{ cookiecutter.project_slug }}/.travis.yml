@@ -24,4 +24,10 @@ after_success:
   - docker exec -t {{cookiecutter.project_slug}}.app coverage xml
   - codecov
 
-# TODO Push image to Docker Hub
+# TODO Follow the steps at https://docs.travis-ci.com/user/docker/#pushing-a-docker-image-to-a-registry
+# to define the DOCKER_USERNAME and DOCKER_PASSWORD environment variables. Uncomment once those are set.
+#deploy:
+#  provider: script
+#  script: bash .travis/docker_push.sh
+#  on:
+#    branch: master
