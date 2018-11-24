@@ -15,13 +15,14 @@ services:
     #   - 5432:5432
     restart: always
   app:
+    # Instruct Gunicorn to reload code when it is changed locally.
+    command: --reload
     links:
       - db
     environment:
       - DEBUG=true
       - SECRET_KEY=replace-me
       - DATABASE_URL=psql://postgres:postgres@{{ cookiecutter.project_slug }}.db:5432/{{ cookiecutter.project_slug }}?connect_timeout=60
-      - GUNICORN_CMD_ARGS=--workers=2 --worker-class=gevent --bind=0.0.0.0:8000 --reload
     ports:
       # This port is primarily exposed for debugging. Use the web service's port to properly access the service.
       - 8000:8000
