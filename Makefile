@@ -15,6 +15,7 @@ test:	## Ensure we can build and run a new project
 	# Execute the project's Make targets
 	cd todo_project_name && make docker.build
 	cd todo_project_name && make local.up
+	sleep 5
 	cd todo_project_name && docker exec -it todo_project_name.app make detect_missing_migrations
 	cd todo_project_name && docker exec -it todo_project_name.app make migrate
 	cd todo_project_name && docker exec -it todo_project_name.app make validate
