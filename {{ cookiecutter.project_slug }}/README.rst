@@ -8,13 +8,25 @@
 
 TODO The ``README.rst`` file should start with a brief description of the project.
 
-Documentation
--------------
-.. |ReadtheDocs| image:: https://readthedocs.org/projects/{{cookiecutter.project_name}}/badge/?version=latest
-.. _ReadtheDocs: http://{{cookiecutter.project_name}}.readthedocs.io/en/latest/
+Getting Started
+---------------
+1. Build the Docker container::
 
-TODO Publish to Read The Docs!
-`Documentation <https://{{cookiecutter.project_name}}.readthedocs.io/en/latest/>`_ is hosted on Read the Docs. The source is hosted in this repo's `docs <https://github.com/edx/{{cookiecutter.project_name}}/tree/master/docs>`_ directory. To contribute, please open a PR against this repo.
+    make docker.build
+
+2. Run the service locally, along with Nginx and PostgreSQL::
+
+    make local.up
+
+
+When running the service with this command, it will be configured to run using the code on your local machine,
+rather than the code built in the previous step. Additionally, the `gunicorn <https://gunicorn.org/>`_ application
+server has been configured to automatically reload when code is changed locally.
+
+3. If you need to run commands inside the container, you can open a shell with the following command::
+
+    make local.shell
+
 
 How To Contribute
 -----------------

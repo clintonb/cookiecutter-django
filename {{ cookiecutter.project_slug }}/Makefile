@@ -46,6 +46,9 @@ quality: ## Run pep8 and Pylint
 
 validate: quality test ## Run tests and quality checks
 
+validate_terraform:	## Ensure Terraform files are properly formatted
+	terraform fmt -diff=true -check
+
 detect_missing_migrations:  ## Determine if any apps are missing generated migrations
 	python manage.py makemigrations --check --dry-run || (echo "Migration files are missing. Please run the "makemigrations" management command, and commit the migrations." && false)
 

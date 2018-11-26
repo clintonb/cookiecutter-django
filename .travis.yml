@@ -16,6 +16,7 @@ env:
 install:
   - pip install -U pip wheel
   - make requirements
+  - bash \{\{\ cookiecutter.project_slug\ \}\}/.travis/install_terraform.sh
 
 script:
   - make test
