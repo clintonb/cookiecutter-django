@@ -3,11 +3,7 @@
 variable "db_username" {}
 variable "db_password" {}
 variable "secret_key" {}
-
-// TODO Add application domain name
-variable "domain" {
-  default = ""
-}
+variable "domain" {}
 
 module "dns" "dns" {
   source = "./dns"

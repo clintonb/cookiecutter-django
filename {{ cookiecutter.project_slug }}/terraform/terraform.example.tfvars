@@ -3,6 +3,7 @@
 
 # NOTE: The database username and password have contraints. We use PostgreSQL.
 # See: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html#RDS_Limits.Constraints
-db_username = ""
-db_password = ""
-secret_key = ""
+db_username = "example"
+db_password = "super-secure!"
+secret_key = "abc123"
+domain = "app.example.com"
