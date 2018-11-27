@@ -14,6 +14,8 @@ Features
 * `12-Factor <https://12factor.net/>`_ based settings via `django-environ <https://django-environ.readthedocs.io/en/latest/>`_
 * Custom user model
 * Docker support
+* Terraform for infrastructure configuration
+* Deployment to AWS Elastic Beanstalk
 
 
 Usage
@@ -26,3 +28,18 @@ Usage
 
     $ cookiecutter https://github.com/clintonb/cookiecutter-django
 
+3. Fill in the various ``TODO`` items with your project's details:
+
+- README sections:
+
+  - Badge URLs
+  - Contributing
+  - Security
+  - Getting Help
+
+- Docker image name
+- Travis environment variables
+- Terraform
+
+  - Secure variables
+  - State bucket name
