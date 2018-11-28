@@ -4,6 +4,7 @@ WORKDIR /app/{{ cookiecutter.project_slug }}
 
 ENV DJANGO_SETTINGS_MODULE {{ cookiecutter.project_slug }}.settings
 ENV PIPENV_DONT_USE_PYENV 1
+ENV PIPENV_SYSTEM 1
 
 RUN apk add --update \
     coreutils \
@@ -20,8 +21,7 @@ COPY Makefile /app/{{ cookiecutter.project_slug }}
 COPY Pipfile /app/{{ cookiecutter.project_slug }}
 COPY Pipfile.lock /app/{{ cookiecutter.project_slug }}
 
-# TODO Switch to environment variable when https://github.com/pypa/pipenv/issues/3278 is resolved.
-RUN pipenv install --dev --system
+RUN make requirements
 
 COPY . /app/{{ cookiecutter.project_slug }}
 
