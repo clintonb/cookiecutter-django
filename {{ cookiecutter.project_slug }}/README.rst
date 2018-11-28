@@ -3,8 +3,8 @@
 .. |Travis| image:: https://travis-ci.org/TODO/{{cookiecutter.project_slug}}.svg?branch=master
 .. _Travis: https://travis-ci.org/TODO/{{cookiecutter.project_slug}}
 
-.. |Codecov| image:: http://codecov.io/gh/TODO/{{cookiecutter.project_slug}}/branch/master/graph/badge.svg
-.. _Codecov: http://codecov.io/gh/TODO/{{cookiecutter.project_slug}}
+.. |Codecov| image:: https://codecov.io/gh/TODO/{{cookiecutter.project_slug}}/branch/master/graph/badge.svg
+.. _Codecov: https://codecov.io/gh/TODO/{{cookiecutter.project_slug}}
 
 TODO The ``README.rst`` file should start with a brief description of the project.
 
