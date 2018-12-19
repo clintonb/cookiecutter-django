@@ -20,10 +20,6 @@ factory-boy = "~=2.11"
 isort = "~=4.3"
 mypy = "~=0.641"
 pycodestyle = "~=2.4"
-# NOTE: This is limited due to https://github.com/PyCQA/pylint-django/issues/201. This can be adjusted
-# once that issue is resolved.
-astroid = "==2.0.4"
-pylint = "==2.1.1"
 pylint-django = "~=2.0"
 pytest-django = "~=3.4"
 
