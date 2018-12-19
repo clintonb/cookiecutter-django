@@ -18,6 +18,7 @@ RUN apt-get update && \
 COPY Makefile /app/{{ cookiecutter.project_slug }}
 COPY Pipfile /app/{{ cookiecutter.project_slug }}
 COPY Pipfile.lock /app/{{ cookiecutter.project_slug }}
+COPY conf/wait-for-it.sh /app/{{ cookiecutter.project_slug }}
 
 RUN make requirements
 
