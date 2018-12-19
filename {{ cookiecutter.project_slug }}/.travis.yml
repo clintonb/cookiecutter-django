@@ -1,5 +1,3 @@
-sudo: required
-
 services:
   - docker
 
@@ -12,13 +10,15 @@ cache: pip
 
 install:
   - bash .travis/install_terraform.sh
+  - make docker.pull
   - make docker.build
-  - make local.up
 
 script:
-  - docker exec -t {{cookiecutter.project_slug}}.app make quality
-  - docker exec -t {{cookiecutter.project_slug}}.app make static
-  - docker exec -t {{cookiecutter.project_slug}}.app make test
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "make quality"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make detect_missing_migrations"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make migrate"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make static"
+  - docker-compose -f docker-compose.yml -f docker-compose.travis.yml run app "./wait-for-it.sh db:5432 -- make test"
   - make validate_terraform
 
 after_success:
