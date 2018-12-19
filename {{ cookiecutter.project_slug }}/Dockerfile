@@ -3,6 +3,7 @@ FROM python:3.6-jessie
 WORKDIR /app/{{ cookiecutter.project_slug }}
 
 ENV DJANGO_SETTINGS_MODULE {{ cookiecutter.project_slug }}.settings
+ENV PIPENV_DEPLOY 1
 ENV PIPENV_DONT_USE_PYENV 1
 ENV PIPENV_SYSTEM 1
 
