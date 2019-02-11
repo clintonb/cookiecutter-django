@@ -30,6 +30,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'whitenoise.runserver_nostatic',
 ]
 
 LOCAL_APPS = [
