@@ -22,7 +22,7 @@ test:	## Ensure we can build and run a new project
 	cd todo_project_name && make validate_terraform
 
 test-static:	## Confirm nginx is serving static files
-	curl -o /dev/null --fail --silent http://localhost:8080/static/admin/css/login.css
+	curl -o /dev/null --fail --silent --compressed http://localhost:8080/static/admin/css/login.css
 
 down:	## Shutdown the containers
 	cd todo_project_name && make local.down
