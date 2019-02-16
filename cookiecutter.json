@@ -3,5 +3,6 @@
   "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '_')|replace('-', '_')|replace('.', '_')|trim() }}",
   "description": "todo-project-description",
   "author_name": "todo-author-name",
-  "terraform_backend_s3_bucket_name": "todo-project.terraform"
+  "terraform_backend_s3_bucket_name": "todo-project.terraform",
+  "docker_user": "todo-project"
 }
