@@ -14,8 +14,8 @@ module "dns" "dns" {
 module "application_cluster" "cluster" {
   source = "./application_cluster"
 
-  application_name = "{{ cookiecutter.project_slug }}"
-  db_name          = "{{ cookiecutter.project_slug }}"
+  application_name = "{{ cookiecutter.project_slug|replace('_', '-') }}"
+  db_name          = "{{ cookiecutter.project_slug|replace('_', '') }}"
   environment      = "production"
   db_username      = "${var.db_username}"
   db_password      = "${var.db_password}"
