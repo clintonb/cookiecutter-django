@@ -1,9 +1,8 @@
 resource "aws_s3_bucket" "terraform" {
-  // TODO Add a prefix to the bucket name (e.g. com.example.myproject.terraform). This should also be in terraform.tf.
-  bucket = "<prefix>.{{ cookiecutter.project_slug }}.terraform"
+  bucket = "{{ cookiecutter.terraform_backend_s3_bucket_name }}"
 
   tags {
-    Name = "{{ cookiecutter.project_slug }} Terraform State Store"
+    Name = "{{ cookiecutter.project_name }} Terraform State Store"
   }
 
   versioning {
