@@ -5,8 +5,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     container_name: {{ cookiecutter.project_slug }}.app
-    # TODO Update this with the appropriate prefix
-    image: {{ cookiecutter.project_slug }}:latest
+    image: {{ cookiecutter.docker_user }}/{{ cookiecutter.project_slug }}:latest
     restart: always
     stdin_open: true
     tty: true

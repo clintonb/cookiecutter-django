@@ -1,8 +1,7 @@
 {
   "AWSEBDockerrunVersion": 1,
   "Image": {
-    // TODO Update this with the appropriate prefix, and remove this comment
-    "Name": "{{ cookiecutter.project_slug }}:latest",
+    "Name": "{{ cookiecutter.docker_user }}/{{ cookiecutter.project_slug }}:latest",
     "Update": true
   },
   "Ports": [
