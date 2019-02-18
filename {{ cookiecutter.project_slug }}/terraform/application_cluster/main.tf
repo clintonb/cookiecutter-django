@@ -3,6 +3,7 @@ variable "db_name" {}
 variable "db_username" {}
 variable "db_password" {}
 variable "environment" {}
+variable "upload_bucket_name" {}
 
 variable "health_check_path" {
   default = "/health/"
@@ -131,7 +132,7 @@ resource "aws_elastic_beanstalk_environment" "environment" {
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
-    value     = "aws-elasticbeanstalk-ec2-role"
+    value     = "${aws_iam_instance_profile.app-instance-profile.name}"
   }
 
   // Use an Application Load Balancer (ALB) instead of the default Classic ELB
@@ -222,6 +223,122 @@ resource "aws_elastic_beanstalk_environment" "environment" {
     name      = "DATABASE_URL"
     value     = "psql://${var.db_username}:${var.db_password}@${aws_db_instance.database.endpoint}/${var.db_name}"
   }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:application:environment"
+    name      = "AWS_STORAGE_BUCKET_NAME"
+    value     = "${aws_s3_bucket.uploads.bucket}"
+  }
+}
+
+// Create S3 bucket for uploaded files
+resource "aws_s3_bucket" "uploads" {
+  bucket = "${var.upload_bucket_name}"
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    enabled = true
+
+    abort_incomplete_multipart_upload_days = 1
+
+    expiration {
+      expired_object_delete_marker = true
+    }
+
+    transition {
+      days          = 60
+      storage_class = "STANDARD_IA"
+    }
+
+    noncurrent_version_transition {
+      days          = 30
+      storage_class = "STANDARD_IA"
+    }
+
+    noncurrent_version_expiration {
+      days = 365
+    }
+  }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
+
+resource "aws_iam_role" "app-instance-role" {
+  name               = "${var.application_name}-instance-role"
+  assume_role_policy = "${data.aws_iam_policy_document.app-instance-role.json}"
+}
+
+data "aws_iam_policy_document" "app-instance-role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_instance_profile" "app-instance-profile" {
+  name = "${var.application_name}-instance-profile"
+  role = "${aws_iam_role.app-instance-role.name}"
+}
+
+resource "aws_iam_policy" "uploads-read-write" {
+  name        = "${var.upload_bucket_name}-read-write"
+  description = "Read and write to the uploads bucket"
+  policy      = "${data.aws_iam_policy_document.uploads-read-write.json}"
+}
+
+data "aws_iam_policy_document" "uploads-read-write" {
+  statement {
+    actions = [
+      "s3:ListBucket",
+      "s3:GetBucketLocation",
+      "s3:ListBucketMultipartUploads",
+      "s3:GetObjectVersion",
+      "s3:ListBucketVersions",
+      "s3:GetBucketTagging",
+    ]
+
+    resources = ["arn:aws:s3:::${aws_s3_bucket.uploads.bucket}"]
+  }
+
+  statement {
+    actions = ["s3:*"]
+
+    resources = ["arn:aws:s3:::${aws_s3_bucket.uploads.bucket}/*"]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "app-iam-policy-uploads" {
+  role       = "${aws_iam_role.app-instance-role.name}"
+  policy_arn = "${aws_iam_policy.uploads-read-write.arn}"
+}
+
+resource "aws_iam_role_policy_attachment" "app-iam-policy-AWSElasticBeanstalkWebTier" {
+  role       = "${aws_iam_role.app-instance-role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+}
+
+resource "aws_iam_role_policy_attachment" "app-iam-policy-AWSElasticBeanstalkMulticontainerDocker" {
+  role       = "${aws_iam_role.app-instance-role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkMulticontainerDocker"
+}
+
+resource "aws_iam_role_policy_attachment" "app-iam-policy-AWSElasticBeanstalkWorkerTier" {
+  role       = "${aws_iam_role.app-instance-role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWorkerTier"
 }
 
 // Create a DNS record at the naked domain (e.g. example.com instead of www.example.com)

@@ -21,6 +21,12 @@ services:
       - DEBUG=true
       - SECRET_KEY=replace-me
       - DATABASE_URL=psql://postgres:postgres@{{ cookiecutter.project_slug }}.db:5432/{{ cookiecutter.project_slug }}?connect_timeout=60
+      # NOTE: Comment the line below to use S3 for storage.
+      # Do NOT use the the production bucket for local development!
+      - DEFAULT_FILE_STORAGE=django.core.files.storage.FileSystemStorage
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
+      - AWS_STORAGE_BUCKET_NAME=
     links:
       - db
     ports:

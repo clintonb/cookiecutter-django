@@ -2,8 +2,9 @@
 
 variable "db_username" {}
 variable "db_password" {}
-variable "secret_key" {}
 variable "domain" {}
+variable "secret_key" {}
+variable "upload_bucket_name" {}
 
 module "dns" "dns" {
   source = "./dns"
@@ -14,12 +15,13 @@ module "dns" "dns" {
 module "application_cluster" "cluster" {
   source = "./application_cluster"
 
-  application_name = "{{ cookiecutter.project_slug|replace('_', '-') }}"
-  db_name          = "{{ cookiecutter.project_slug|replace('_', '') }}"
-  environment      = "production"
-  db_username      = "${var.db_username}"
-  db_password      = "${var.db_password}"
-  route_53_zone_id = "${module.dns.zone_id}"
-  secret_key       = "${var.secret_key}"
-  ssl_cert_arn     = "${module.dns.cert_arn}"
+  application_name   = "{{ cookiecutter.project_slug|replace('_', '-') }}"
+  db_name            = "{{ cookiecutter.project_slug|replace('_', '') }}"
+  environment        = "production"
+  db_username        = "${var.db_username}"
+  db_password        = "${var.db_password}"
+  route_53_zone_id   = "${module.dns.zone_id}"
+  secret_key         = "${var.secret_key}"
+  ssl_cert_arn       = "${module.dns.cert_arn}"
+  upload_bucket_name = "${var.upload_bucket_name}"
 }

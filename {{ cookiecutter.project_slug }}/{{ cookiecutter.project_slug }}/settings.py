@@ -30,6 +30,7 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     'django_extensions',
+    'storages',
     'whitenoise.runserver_nostatic',
 ]
 
@@ -202,3 +203,13 @@ LOGGING = {
         },
     },
 }
+
+# Media file storage
+DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE', cast=str, default='django_demo.apps.core.backends.MediaStorage')
+
+# NOTE: In production, we leave the access key ID and secret as None to allow IAM roles to be used.
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', cast=str, default=None)
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY', cast=str, default=None)
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', cast=str, default=None)
+AWS_DEFAULT_ACL = None
+AWS_S3_ENCRYPTION = True
