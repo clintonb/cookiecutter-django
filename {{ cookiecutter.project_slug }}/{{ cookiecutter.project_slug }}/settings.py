@@ -205,7 +205,8 @@ LOGGING = {
 }
 
 # Media file storage
-DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE', cast=str, default='django_demo.apps.core.backends.MediaStorage')
+DEFAULT_FILE_STORAGE = env('DEFAULT_FILE_STORAGE', cast=str,
+                           default='{{ cookiecutter.project_slug }}.apps.core.backends.MediaStorage')
 
 # NOTE: In production, we leave the access key ID and secret as None to allow IAM roles to be used.
 AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID', cast=str, default=None)
