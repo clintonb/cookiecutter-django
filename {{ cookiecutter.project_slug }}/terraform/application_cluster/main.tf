@@ -112,7 +112,7 @@ resource "aws_elastic_beanstalk_application" "application" {
 resource "aws_elastic_beanstalk_environment" "environment" {
   name                = "${var.application_name}-${var.environment}"
   application         = "${var.application_name}"
-  solution_stack_name = "64bit Amazon Linux 2018.03 v2.12.5 running Docker 18.06.1-ce"
+  solution_stack_name = "64bit Amazon Linux 2018.03 v2.12.8 running Docker 18.06.1-ce"
 
   // NOTE: See https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html for more settings.
   // NOTE: The RDS settings do not work!
