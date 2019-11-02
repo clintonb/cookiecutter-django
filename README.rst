@@ -9,8 +9,8 @@ intentionally lighter than more popular templates to allow for future flexibilit
 
 Features
 --------
-* Django 2.1.x
-* Support for Python 3.6+
+* Django 2.2.x
+* Support for Python 3.7+
 * `12-Factor <https://12factor.net/>`_ based settings via `django-environ <https://django-environ.readthedocs.io/en/latest/>`_
 * Custom user model
 * Docker support
