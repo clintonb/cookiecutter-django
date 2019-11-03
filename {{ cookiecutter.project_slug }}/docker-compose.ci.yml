@@ -1,0 +1,22 @@
+version: "3"
+services:
+  db:
+    container_name: {{ cookiecutter.project_slug }}.db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB={{ cookiecutter.project_slug }}
+    image: postgres:11.1-alpine
+  app:
+    # NOTE: We pass an arbitrary command to the container via docker-compose so we don't start
+    # gunicorn unnecessarily, and run out of memory. We are only running tests, so there
+    # is no need to run gunicorn.
+    entrypoint:
+      - bash
+      - -c
+    environment:
+      - SECRET_KEY=replace-me
+      - DATABASE_URL=postgres://postgres:postgres@{{ cookiecutter.project_slug }}.db:5432/{{ cookiecutter.project_slug }}?connect_timeout=60
+      - DEFAULT_FILE_STORAGE=django.core.files.storage.FileSystemStorage
+    links:
+      - db
