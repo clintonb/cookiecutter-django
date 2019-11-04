@@ -1,5 +1,6 @@
 [run]
 branch=True
+data_file=test_output/.coverage
 source={{ cookiecutter.project_slug }}
 omit =
     {{ cookiecutter.project_slug }}/settings*
@@ -10,3 +11,6 @@ omit =
     *admin.py
     *static*
     *templates*
+
+[xml]
+output=test_output/coverage.xml

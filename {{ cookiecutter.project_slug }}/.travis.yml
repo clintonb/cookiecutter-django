@@ -24,7 +24,7 @@ script:
 after_success:
   - pip install -U codecov
   - docker exec -t {{cookiecutter.project_slug}}.app coverage xml
-  - codecov
+  - codecov --file test_output/coverage.xml
 
 before_deploy:
   - pip install -U awsebcli
